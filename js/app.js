@@ -81,7 +81,7 @@ window.addEventListener("load", () => {
       let delay = 0.04;
       document
         .querySelector(["h1"])
-        .querySelectorAll(["span"])
+        .querySelectorAll(".span")
         .forEach((span) => {
           delay += 0.04;
           span.style = `transition-delay: ${delay}s;  animation-delay: ${delay}s;`;
@@ -129,6 +129,7 @@ window.addEventListener("load", () => {
       const headerTitle1 = document.querySelectorAll(".title1");
       const headerTitle2 = document.querySelectorAll(".title2");
       const headerTitle3 = document.querySelectorAll(".title3");
+
       let timeOut1 = 3000;
       let Interval1 = 1000;
       let timeOut2 = 3500;
