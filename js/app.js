@@ -21,41 +21,67 @@ if (window.innerWidth < mob) {
   });
 }
 
-document.querySelectorAll(".slider").forEach((n, i) => {
-  window[`slider${i + 1}`] = new Swiper(n, {
-    mousewheel: true,
-    // speed: 1500,
-    // autoplay: {
-    //   delay: 5000,
-    // },
-    breakpoints: {
-      320: {
-        slidesPerView: 1.25,
-        centeredSlides: false,
-        spaceBetween: 20,
-        // slidesOffsetBefore: 500,
-        direction: "horizontal",
+const slider = document.querySelector(".slider");
+
+if (slider) {
+  function bindSwipers(...swiperList) {
+    for (const swiper of swiperList) {
+      swiper.setTranslate = function (translate, byController, doNotPropagate) {
+        if (doNotPropagate) {
+          Swiper.prototype.setTranslate.apply(this, arguments);
+        } else {
+          for (const swiper of swiperList) {
+            swiper.setTranslate(translate, byController, true);
+          }
+        }
+      };
+      swiper.setTransition = function (duration, byController, doNotPropagate) {
+        if (doNotPropagate) {
+          Swiper.prototype.setTransition.apply(this, arguments);
+        } else {
+          for (const swiper of swiperList) {
+            swiper.setTransition(duration, byController, true);
+          }
+        }
+      };
+    }
+  }
+  document.querySelectorAll(".slider").forEach((n, i) => {
+    window[`slider${i + 1}`] = new Swiper(n, {
+      mousewheel: true,
+      // speed: 1500,
+      // autoplay: {
+      //   delay: 5000,
+      // },
+      breakpoints: {
+        320: {
+          slidesPerView: 1.25,
+          centeredSlides: false,
+          spaceBetween: 20,
+          // slidesOffsetBefore: 500,
+          direction: "horizontal",
+        },
+        767: {
+          freeMode: true,
+          centeredSlides: true,
+          direction: "vertical",
+          spaceBetween: 0,
+          slidesOffsetBefore: -50,
+          slidesPerView: 2.9,
+        },
+        992: {
+          freeMode: true,
+          centeredSlides: true,
+          direction: "vertical",
+          spaceBetween: 0,
+          slidesOffsetBefore: -100,
+          slidesPerView: 1.75,
+        },
       },
-      767: {
-        freeMode: true,
-        centeredSlides: true,
-        direction: "vertical",
-        spaceBetween: 0,
-        slidesPerView: 3.75,
-        slidesOffsetBefore: -150,
-      },
-      992: {
-        freeMode: true,
-        centeredSlides: true,
-        direction: "vertical",
-        spaceBetween: 0,
-        slidesOffsetBefore: -100,
-        slidesPerView: 1.75,
-      },
-    },
+    });
   });
-});
-bindSwipers(slider1, slider2);
+  bindSwipers(slider1, slider2);
+}
 
 window.addEventListener("load", () => {
   const body = document.querySelector("body");
